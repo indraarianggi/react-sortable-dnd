@@ -5,7 +5,19 @@ import Column from "./Column";
 import BurnBarrel from "./BurnBarrel";
 
 export default function Board() {
-  const [cards, setCards] = React.useState<CardType[]>(DEFAULT_CARDS);
+  const [cards, setCards] = React.useState<CardType[]>([]);
+  const [hasChecked, setHasChecked] = React.useState(false);
+
+  React.useEffect(() => {
+    hasChecked && localStorage.setItem("cards", JSON.stringify(cards));
+  }, [cards, hasChecked]);
+
+  React.useEffect(() => {
+    const cardData = localStorage.getItem("cards");
+
+    setCards(cardData ? JSON.parse(cardData) : []);
+    setHasChecked(true);
+  }, []);
 
   return (
     <div className="flex h-full w-full gap-3 overflow-scroll p-12">
